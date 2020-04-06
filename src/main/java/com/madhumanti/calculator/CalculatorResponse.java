@@ -41,7 +41,7 @@ public class CalculatorResponse {
 			k = (Object) engine.eval(expression);
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
-			return "not an expression";
+			return "Invalid expression";
 		}
         return k+"";
     } 

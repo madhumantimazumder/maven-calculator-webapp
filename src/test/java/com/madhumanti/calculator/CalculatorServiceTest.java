@@ -6,6 +6,7 @@ import com.madhumanti.calculator.CalculatorService;
 
 import static org.junit.Assert.*;
 
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -19,7 +20,9 @@ public class CalculatorServiceTest {
 
     @Test
     public void testCalculate() throws ParseException {
-        assertEquals(2, new CalculatorService().calculate("'1*2'"));
+    	JSONObject jo = new JSONObject(); 
+    	jo.put("data", "1+2");
+        assertEquals("3", new CalculatorService().calculate(jo.toJSONString()));
     }
 
 }

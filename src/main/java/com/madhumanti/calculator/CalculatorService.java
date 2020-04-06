@@ -31,6 +31,7 @@ public class CalculatorService {
     public String calculate(String s) throws ParseException {
     	JSONObject jObj =(JSONObject)new JSONParser().parse(s);
     	CalculatorResponse c=new CalculatorResponse(jObj.get("data").toString());
-        return c.evaluate();
+        String m=c.evaluate();
+    	return m;
     }
 }

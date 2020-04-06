@@ -42,8 +42,8 @@ function calculate(s){
     	   
        	console.log(response);
        },
-       error: function() {
-           console.log('Error');
+       error: function(error) {
+    	   $(" input[name=answer]").val(error);
        }
    }); 
 }
