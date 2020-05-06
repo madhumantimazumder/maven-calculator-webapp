@@ -1,0 +1,62 @@
+pipeline {
+  environment {
+    registry = "madhunb25/calculator-webapp"
+    registryCredential = 'b2a09bbd-7788-4bd4-b6a0-c7e71b0f5daf'
+    dockerImage = ''
+    dockerImageLatest = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/madhumantimazumder/maven-calculator-webapp.git'
+      }
+    }
+    stage('Build'){
+        steps {
+             sh 'mvn clean install'
+        }
+    }
+    stage('Test'){
+        steps {
+             sh 'mvn test'
+        }
+    }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImageLatest = docker.build registry + ":latest"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+            dockerImageLatest.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+    stage('Execute Rundeck job') {
+        steps {
+          script {
+            step([$class: "RundeckNotifier",
+                  includeRundeckLogs: true,
+                  jobId: "8563c2c3-e267-4052-8265-92aa734b639b",
+                  rundeckInstance: "rundeckproj",
+                  shouldFailTheBuild: true,
+                  shouldWaitForRundeckJob: true,
+                  tailLog: true])
+          }
+        }
+    }
+  }
+}
