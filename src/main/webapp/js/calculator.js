@@ -5,7 +5,7 @@ $(document).ready(function() {
 var value=0;
 function call(){
 	 $.ajax({
-         url: '/java-maven-calculator-web-app/api/calculator/ping',
+         url: '/api/calculator/ping',
          //url: 'js/jsons/sidebar.json',
          type: 'GET',
          crossDomain: true,
@@ -25,7 +25,7 @@ function calculate(s){
 	var json={
 			'data' : s
 	}
-	var url = "/java-maven-calculator-web-app/api/calculator/calculate";
+	var url = "/api/calculator/calculate";
 	 $.ajax({
        url: url,
        method: "POST",
